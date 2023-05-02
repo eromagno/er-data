@@ -29,12 +29,19 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: dist-files # nomre a dar al artefacto
-          path: |  # pipe para indicar varias lineas
-            dist
-            package.json
+          path: dist
+          #path: |  # pipe para indicar varias lineas
+          #  dist
+          #  package.json
   deploy:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Get build artifacts
+        uses: actions/download-artifact@v3  # recupera los artefactos
+        with:
+          name: dist-files
+      - name: Output contents of disp file
+        run: ls
       - name: Deploy
         run: echo "Deploying..."
