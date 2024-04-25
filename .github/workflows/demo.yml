@@ -8,9 +8,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Get code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Cach dependencies # debe ser antes de instalar las dependencias
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.npm  # path of folder that must be cached
           key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
@@ -27,9 +27,9 @@ jobs:
       script-file: ${{ steps.publish.outputs.script-file}}  # para poder referenciar en sigte Job
     steps:
       - name: Get code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Cache dependencies # debe ser antes de instalar las dependencias
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.npm  # path of folder that must be cached
           key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
@@ -41,7 +41,7 @@ jobs:
         id: publish # nombre de 
         run: find dist/assets/*.js -type f -execdir echo 'script-file={}' >> $GITHUB_OUTPUT ';'
       - name: Upload artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: dist-files # nombre a dar al artefacto
           #path: dist
@@ -53,7 +53,7 @@ jobs:
   #   runs-on: ubuntu-latest
   #   steps:
   #     - name: Get build artifacts
-  #       uses: actions/download-artifact@v3  # recupera los artefactos
+  #       uses: actions/download-artifact@v4  # recupera los artefactos
   #       with:
   #         name: dist-files
   #     - name: Output contents of disp file
