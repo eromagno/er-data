@@ -28,7 +28,7 @@ jobs:
     steps:
       - name: Get code
         uses: actions/checkout@v3
-      - name: Cach dependencies # debe ser antes de instalar las dependencias
+      - name: Cache dependencies # debe ser antes de instalar las dependencias
         uses: actions/cache@v3
         with:
           path: ~/.npm  # path of folder that must be cached
@@ -43,22 +43,22 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: dist-files # nomre a dar al artefacto
-          path: dist
-          #path: |  # pipe para indicar varias lineas
-          #  dist
-          #  package.json
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Get build artifacts
-        uses: actions/download-artifact@v3  # recupera los artefactos
-        with:
-          name: dist-files
-      - name: Output contents of disp file
-        run: ls
-      - name: Output filename
-        run: echo "${{ needs.build.outputs.script-file }}"
-      - name: Deploy
-        run: echo "Deploying..."
+          name: dist-files # nombre a dar al artefacto
+          #path: dist
+          path: |  # pipe para indicar varias lineas
+            dist
+            package.json
+  # deploy:
+  #   needs: build
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Get build artifacts
+  #       uses: actions/download-artifact@v3  # recupera los artefactos
+  #       with:
+  #         name: dist-files
+  #     - name: Output contents of disp file
+  #       run: ls
+  #     - name: Output filename
+  #       run: echo "${{ needs.build.outputs.script-file }}"
+  #     - name: Deploy
+  #       run: echo "Deploying..."
