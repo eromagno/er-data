@@ -24,6 +24,7 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     outputs:
+      # {{steps.<id of publish>.outputs.<variable}}
       script-file: ${{ steps.publish.outputs.script-file}}  # para poder referenciar en sigte Job
     steps:
       - name: Get code
@@ -38,7 +39,9 @@ jobs:
       - name: Build website
         run: npm run build
       - name: Publish JS filename
-        id: publish # nombre de 
+        id: publish # Here the name of file name stored in variable 'script-file' to páss to Build job
+        # $ find dist/assets/*.js -type f -execdir echo 'script-file={}' ';'
+        # script-file=./index.047b9b6b.js
         run: find dist/assets/*.js -type f -execdir echo 'script-file={}' >> $GITHUB_OUTPUT ';'
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
@@ -58,7 +61,8 @@ jobs:
           name: dist-files
       - name: Output contents of disp file
         run: ls -al
-      - name: Output filename
+      - name: Output filename  # we show the name of the variable that was passwd before
+          # Using the "needs" object that contains outputs the "<job name> then the "output" then name of variable: "script-file"
         run: echo "${{ needs.build.outputs.script-file }}"
       - name: Deploy
         run: echo "Deploying..."
