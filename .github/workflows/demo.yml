@@ -9,11 +9,12 @@ jobs:
     steps:
       - name: Get code
         uses: actions/checkout@v4
-      - name: Cach dependencies # debe ser antes de instalar las dependencias
-        uses: actions/cache@v4
+      - name: Cach dependencies # The following 'Catch dependencies' step must happen before installing the dependencies
+        uses: actions/cache@v4  # official action to Catch dependencies
         with:
-          path: ~/.npm  # path of folder that must be cached
-          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
+          path: ~/.npm  # here the path of folders that must be cached
+          # Dynamic Key for later retrieving the catch, based on hash over all package-lock.json files
+          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}  
       - name: Install dependencies
         run: npm ci
       - name: Lint code
@@ -29,8 +30,8 @@ jobs:
     steps:
       - name: Get code
         uses: actions/checkout@v4
-      - name: Cache dependencies # debe ser antes de instalar las dependencias
-        uses: actions/cache@v4
+      - name: Cache dependencies # The following 'Catch dependencies' step must happen before installing the dependencies
+        uses: actions/cache@v4   # same chach from Test job 
         with:
           path: ~/.npm  # path of folder that must be cached
           key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
@@ -61,7 +62,7 @@ jobs:
           name: dist-files
       - name: Output contents of disp file
         run: ls -al
-      - name: Output filename  # we show the name of the variable that was passwd before
+      - name: Output variable from 'build' job with name of file # we show the name of the variable that was passwd before
           # Using the "needs" object that contains outputs the "<job name> then the "output" then name of variable: "script-file"
         run: echo "${{ needs.build.outputs.script-file }}"
       - name: Deploy
